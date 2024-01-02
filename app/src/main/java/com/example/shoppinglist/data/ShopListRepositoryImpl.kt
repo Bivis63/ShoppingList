@@ -8,14 +8,14 @@ import java.lang.RuntimeException
 
 class ShopListRepositoryImpl : ShopListRepository {
 
-    //создал временную переменную до помомента подключения базы данных
-    private val shopList = mutableListOf<ShopItem>()
+    //создал временную переменную до момомента подключения базы данных
+    private val shopList = sortedSetOf<ShopItem>({ p1, p2 -> p1.id.compareTo(p2.id) })
     private var shopListLD = MutableLiveData<List<ShopItem>>()
     private var autoIncrementId = 0
 
     init {
         for (i in 0 until 10) {
-            val item = ShopItem("Name $i", i, true)
+            val item = ShopItem("Name $i", count = i, true)
             addShopItem(item)
         }
     }
