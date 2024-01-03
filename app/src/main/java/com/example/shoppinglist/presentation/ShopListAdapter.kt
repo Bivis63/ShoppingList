@@ -1,9 +1,11 @@
 package com.example.shoppinglist.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
@@ -18,6 +20,10 @@ class ShopListAdapter() :
             field = value
             notifyDataSetChanged()
         }
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
+
+
 
     class ShopListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName = view.findViewById<TextView>(R.id.tv_name)
@@ -42,6 +48,14 @@ class ShopListAdapter() :
 
     override fun onBindViewHolder(holder: ShopListViewHolder, position: Int) {
         val shopItem = shopList[position]
+        holder.itemView.setOnLongClickListener {
+            onShopItemLongClickListener?.invoke(shopItem)
+            true
+        }
+        holder.itemView.setOnClickListener {
+            onShopItemClickListener?.invoke(shopItem)
+            Toast.makeText(holder.itemView.context, "${shopItem.name}", Toast.LENGTH_LONG).show()
+        }
         holder.tvName.text = "${shopItem.name}"
         holder.tvCount.text = shopItem.count.toString()
 
@@ -59,6 +73,6 @@ class ShopListAdapter() :
     companion object {
         const val ENABLE = 100
         const val DISABLE = 101
-        const val MAX_PULL_SIZE = 5
+        const val MAX_PULL_SIZE = 15
     }
 }
