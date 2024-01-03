@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.model.ShopItem
+import java.lang.RuntimeException
 
 class ShopListAdapter() :
     RecyclerView.Adapter<ShopListAdapter.ShopListViewHolder>() {
@@ -21,11 +22,17 @@ class ShopListAdapter() :
     class ShopListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName = view.findViewById<TextView>(R.id.tv_name)
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopListViewHolder {
+        val layout = when (viewType) {
+            ENABLE -> R.layout.item_shop_enable
+            DISABLE -> R.layout.item_shop_disabled
+            else -> throw RuntimeException("Unknown view type: $viewType")
+        }
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shop_enable, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ShopListViewHolder(view = view)
     }
 
@@ -35,23 +42,23 @@ class ShopListAdapter() :
 
     override fun onBindViewHolder(holder: ShopListViewHolder, position: Int) {
         val shopItem = shopList[position]
-        val status = if(shopItem.enable){
-            "Active"
-        }else{
-            "Not Active"
-        }
+        holder.tvName.text = "${shopItem.name}"
+        holder.tvCount.text = shopItem.count.toString()
 
-        if (shopItem.enable){
-            holder.tvName.setTextColor(ContextCompat.getColor(holder.itemView.context,android.R.color.holo_red_dark))
-            holder.tvName.text = "${shopItem.name} $status"
-            holder.tvCount.text = shopItem.count.toString()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = shopList[position]
+        return if (item.enable) {
+            ENABLE
+        } else {
+            DISABLE
         }
     }
 
-    override fun onViewRecycled(holder: ShopListViewHolder) {
-        super.onViewRecycled(holder)
-        holder.tvName.text = ""
-        holder.tvCount.text = ""
-        holder.tvName.setTextColor(ContextCompat.getColor(holder.itemView.context,android.R.color.white))
+    companion object {
+        const val ENABLE = 100
+        const val DISABLE = 101
+        const val MAX_PULL_SIZE = 5
     }
 }
