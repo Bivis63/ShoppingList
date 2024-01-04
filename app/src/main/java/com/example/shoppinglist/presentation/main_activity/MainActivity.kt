@@ -1,19 +1,13 @@
-package com.example.shoppinglist.presentation
+package com.example.shoppinglist.presentation.main_activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
-import com.example.shoppinglist.domain.model.ShopItem
 import com.example.shoppinglist.presentation.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
