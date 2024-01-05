@@ -7,16 +7,16 @@ import com.example.shoppinglist.domain.repository.ShopListRepository
 import java.lang.RuntimeException
 import kotlin.random.Random
 
-class ShopListRepositoryImpl : ShopListRepository {
+object ShopListRepositoryImpl : ShopListRepository {
 
-    //создал временную переменную до момомента подключения базы данных
-    private val shopList = sortedSetOf<ShopItem>({ p1, p2 -> p1.id.compareTo(p2.id) })
-    private var shopListLD = MutableLiveData<List<ShopItem>>()
+    private val shopListLD = MutableLiveData<List<ShopItem>>()
+    private val shopList = sortedSetOf<ShopItem>({ o1, o2 -> o1.id.compareTo(o2.id) })
+
     private var autoIncrementId = 0
 
     init {
-        for (i in 0 until 100) {
-            val item = ShopItem("Name $i", count = i, Random.nextBoolean())
+        for (i in 0 until 10) {
+            val item = ShopItem("Name $i", i, Random.nextBoolean())
             addShopItem(item)
         }
     }
@@ -29,7 +29,7 @@ class ShopListRepositoryImpl : ShopListRepository {
         updateList()
     }
 
-    override fun deleteItem(shopItem: ShopItem) {
+    override fun deleteShopItem(shopItem: ShopItem) {
         shopList.remove(shopItem)
         updateList()
     }
@@ -40,12 +40,14 @@ class ShopListRepositoryImpl : ShopListRepository {
         addShopItem(shopItem)
     }
 
-    override fun getShopList(): LiveData<List<ShopItem>> {
-        return shopListLD
+    override fun getShopItem(shopItemId: Int): ShopItem {
+        return shopList.find {
+            it.id == shopItemId
+        } ?: throw RuntimeException("Element with id $shopItemId not found")
     }
 
-    override fun getShopItem(shopItemId: Int): ShopItem {
-        return shopList.find { it.id == shopItemId } ?: throw RuntimeException("not found")
+    override fun getShopList(): LiveData<List<ShopItem>> {
+        return shopListLD
     }
 
     private fun updateList() {
