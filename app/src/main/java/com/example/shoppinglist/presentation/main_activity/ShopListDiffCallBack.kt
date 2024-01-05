@@ -3,10 +3,11 @@ package com.example.shoppinglist.presentation.main_activity
 import androidx.recyclerview.widget.DiffUtil
 import com.example.shoppinglist.domain.model.ShopItem
 
-class ShopListDiffCallBack(
+class ShopListDiffCallback(
     private val oldList: List<ShopItem>,
-    private val newList: List<ShopItem>
-) : DiffUtil.Callback() {
+    private val newList: List<ShopItem>,
+): DiffUtil.Callback() {
+
     override fun getOldListSize(): Int {
         return oldList.size
     }
@@ -16,14 +17,14 @@ class ShopListDiffCallBack(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldShopItem = oldList[oldItemPosition]
-        val newShopItem = newList[newItemPosition]
-        return oldShopItem.id == newShopItem.id
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldShopItem = oldList[oldItemPosition]
-        val newShopItem = newList[newItemPosition]
-        return oldShopItem == newShopItem
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+        return oldItem == newItem
     }
 }

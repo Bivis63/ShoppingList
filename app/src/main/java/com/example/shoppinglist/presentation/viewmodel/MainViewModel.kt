@@ -8,24 +8,22 @@ import com.example.shoppinglist.domain.usecase.DeleteShopItemUseCase
 import com.example.shoppinglist.domain.usecase.EditShopItemUseCase
 import com.example.shoppinglist.domain.usecase.GetShopListUseCase
 
-class MainViewModel:ViewModel() {
+class MainViewModel : ViewModel() {
 
-    //временное решение до подключения дагера
-    private val repository = ShopListRepositoryImpl()
+    private val repository = ShopListRepositoryImpl
 
     private val getShopListUseCase = GetShopListUseCase(repository)
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
-    private val editShopItemUseCase =EditShopItemUseCase(repository)
+    private val editShopItemUseCase = EditShopItemUseCase(repository)
 
     val shopList = getShopListUseCase.getShopList()
 
-
-    fun deleteShopItem (shopItem: ShopItem){
-        deleteShopItemUseCase.deleteItem(shopItem)
+    fun deleteShopItem(shopItem: ShopItem) {
+        deleteShopItemUseCase.deleteShopItem(shopItem)
     }
 
-    fun editShopItem (shopItem: ShopItem){
-        val newItem = shopItem.copy(enable = !shopItem.enable)
+    fun changeEnableState(shopItem: ShopItem) {
+        val newItem = shopItem.copy(enabled = !shopItem.enabled)
         editShopItemUseCase.editShopItem(newItem)
     }
 }
