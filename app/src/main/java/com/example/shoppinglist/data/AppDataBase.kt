@@ -5,18 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ShopItemDbModel::class], version = 1, exportSchema = false)
-
-abstract class AppDataBase : RoomDatabase() {
+@Database(entities = [ShopItemDbModel::class], version = 1)
+abstract class AppDatabase: RoomDatabase() {
 
     abstract fun shopListDao(): ShopListDao
+
     companion object {
 
-        private var INSTANCE: AppDataBase? = null
+        private var INSTANCE: AppDatabase? = null
         private val LOCK = Any()
         private const val DB_NAME = "shop_item.db"
 
-        fun getInstance(application: Application): AppDataBase {
+        fun getInstance(application: Application): AppDatabase {
             INSTANCE?.let {
                 return it
             }
@@ -26,9 +26,11 @@ abstract class AppDataBase : RoomDatabase() {
                 }
                 val db = Room.databaseBuilder(
                     application,
-                    AppDataBase::class.java,
+                    AppDatabase::class.java,
                     DB_NAME
-                ).build()
+                )
+                    .allowMainThreadQueries()
+                    .build()
                 INSTANCE = db
                 return db
             }

@@ -15,11 +15,11 @@ import com.example.shoppinglist.presentation.shopitem_activity.ShopItemFragment
 import com.example.shoppinglist.presentation.viewmodel.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity(),ShopItemFragment.OnEditingFinishedListener {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
-    private var shopItemContainer: FragmentContainerView? =null
+    private var shopItemContainer: FragmentContainerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,25 +36,25 @@ class MainActivity : AppCompatActivity(),ShopItemFragment.OnEditingFinishedListe
             if (isOnePaneMode()) {
                 val intent = newIntentAddItem(this)
                 startActivity(intent)
-            }else{
+            } else {
                 launchFragment(ShopItemFragment.newInstanceAddItem())
             }
         }
     }
 
-    override fun onEditingFinished(){
-        Toast.makeText(this,"Success",Toast.LENGTH_LONG).show()
+    override fun onEditingFinished() {
+        Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
         supportFragmentManager.popBackStack()
     }
 
-    private fun isOnePaneMode():Boolean{
+    private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }
 
-    private fun launchFragment(fragment: Fragment){
+    private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container,fragment)
+            .replace(R.id.shop_item_container, fragment)
             .addToBackStack(null)
             .commit()
 
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(),ShopItemFragment.OnEditingFinishedListe
             if (isOnePaneMode()) {
                 val intent = newIntentEditItem(this, it.id)
                 startActivity(intent)
-            }else{
+            } else {
                 launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
             }
         }
