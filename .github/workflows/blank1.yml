@@ -1,0 +1,30 @@
+name: Android Build
+
+on:
+  pull_request:
+    branches:
+      - master
+      - developer
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Set up Android SDK
+        uses: actions/setup-java
+        with:
+          distribution: 'android'
+          java-version: '11'
+
+      - name: Build with Gradle
+        run: ./gradlew build
